@@ -12,7 +12,7 @@ import java.util.regex.Matcher;
  */
 class Login {
     // Class attributes to store user registration details
- private String username;
+  private String username;
     private String password;
     private String firstName;
     private String lastName;
@@ -24,27 +24,20 @@ class Login {
     }
     
     public boolean checkUserName() {
-           // Check if username is not null, length <= 5, and contains underscore
         return username != null && username.length() <= 5 && username.contains("_");
     }
     
     public boolean checkPasswordComplexity() {
-               // Check if password is null or too short
         if (password == null || password.length() < 8) return false;
         
-            // Check if password contains at least one capital letter
         boolean hasCapital = !password.equals(password.toLowerCase());
-        // Check if password contains at least one number using regex
         boolean hasNumber = password.matches(".*\\d.*");
-        // Check if password contains at least one special character
         boolean hasSpecial = !password.matches("[A-Za-z0-9 ]*");
-           // Return true only if all conditions are met
         return hasCapital && hasNumber && hasSpecial;
     }
     
     public boolean checkCellPhoneNumber() {
         if (cellNumber == null) return false;
-        // Regex created with ChatGPT assistance
         String regex = "^\\+27\\d{9}$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(cellNumber);
@@ -52,29 +45,51 @@ class Login {
     }
     
     public String registerUser(String username, String password, String cellNumber) {
-          // Store the input values
         this.username = username;
         this.password = password;
         this.cellNumber = cellNumber;
         
-          // Validate username and return appropriate error message if invalid
-        if (!checkUserName()) {
-            return "Username is not correctly formatted, please ensure that your username contains an underscore and is no more than five characters in length.";
+        boolean isUsernameValid = checkUserName();
+        boolean isPasswordValid = checkPasswordComplexity();
+        boolean isCellNumberValid = checkCellPhoneNumber();
+        
+        if (!isUsernameValid && !isPasswordValid && !isCellNumberValid) {
+            return "❌ REGISTRATION FAILED - ALL FIELDS INVALID:\n\n" +
+                   "• Username is not correctly formatted, please ensure that your username contains an underscore and is no more than five characters in length.\n" +
+                   "• Password is not correctly formatted, please ensure that the password contains at least eight characters, a capital letter, a number, and a special character.\n" +
+                   "• Cell phone number is incorrectly formatted or does not contain international code.\n\n" +
+                   "Please correct all errors and try again.";
         }
-            // Validate password and return appropriate error message if invalid
-        if (!checkPasswordComplexity()) {
-            return "Password is not correctly formatted, please ensure that the password contains at least eight characters, a capital letter, a number, and a special character.";
+        
+        StringBuilder errorMessage = new StringBuilder();
+        errorMessage.append("❌ REGISTRATION FAILED:\n\n");
+        
+        if (!isUsernameValid) {
+            errorMessage.append("• Username is not correctly formatted, please ensure that your username contains an underscore and is no more than five characters in length.\n");
         }
-         // Validate cell number and return appropriate error message if invalid
-        if (!checkCellPhoneNumber()) {
-            return "Cell phone number is incorrectly formatted or does not contain international code.";
+        
+        if (!isPasswordValid) {
+            errorMessage.append("• Password is not correctly formatted, please ensure that the password contains at least eight characters, a capital letter, a number, and a special character.\n");
         }
-           // All validations passed - registration successful
-        return "Username successfully captured.\nPassword successfully captured.\nCell phone number successfully added.";
+        
+        if (!isCellNumberValid) {
+            errorMessage.append("• Cell phone number is incorrectly formatted or does not contain international code.\n");
+        }
+        
+        errorMessage.append("\nPlease correct the errors and try again.");
+        
+        if (errorMessage.length() > 0 && (!isUsernameValid || !isPasswordValid || !isCellNumberValid)) {
+            return errorMessage.toString();
+        }
+        
+        return "✅ REGISTRATION SUCCESSFUL!\n\n" +
+               "• Username successfully captured.\n" +
+               "• Password successfully captured.\n" +
+               "• Cell phone number successfully added.";
     }
     
     public boolean loginUser(String inputUsername, String inputPassword) {
-            return username != null && username.equals(inputUsername) && password != null && password.equals(inputPassword);
+        return username != null && username.equals(inputUsername) && password != null && password.equals(inputPassword);
     }
     
     public String returnLoginStatus(boolean isLoginSuccessful) {
@@ -85,12 +100,9 @@ class Login {
         }
     }
     
-    // Getters for testing
     public String getUsername() { return username; }
     public String getPassword() { return password; }
     public String getCellNumber() { return cellNumber; }
-       public String getFirstName() { return firstName; }
+    public String getFirstName() { return firstName; }
     public String getLastName() { return lastName; }
-} 
-
-
+}
