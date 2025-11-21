@@ -1,0 +1,5 @@
+{"recipient":"+27834557896","message":"Did you get the cake?","status":"SENT","hash":"91:4:DIDCAKE"}
+{"recipient":"+27338884567","message":"Where are you? You are late! I have asked you to be on time.","status":"STORED","hash":"74:5:WHERETIME"}
+{"recipient":"+27334484567","message":"Yohoooo, I am at your gate.","status":"DISREGARDED","hash":"76:6:YOHOOOOGATE"}
+{"recipient":"0838884567","message":"It is dinner time!","status":"SENT","hash":"50:7:ITTIME"}
+{"recipient":"+27338884567","message":"Ok, I am leaving without you.","status":"STORED","hash":"69:8:OKYOU"}

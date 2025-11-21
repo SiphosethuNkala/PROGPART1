@@ -1,14 +1,13 @@
-
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package poepart1;
-import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 /**
  *
- * @author RC_Student_lab
+ * @author RC_Student_Lab
  */
 class Login {
     // Class attributes to store user registration details

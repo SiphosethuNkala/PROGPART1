@@ -9,13 +9,13 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
 /**
  *
  * @author RC_Student_Lab
  */
 public class MessageNGTest {
-    
-     private Message message1;
+  private Message message1;
     private Message message2;
     
     public MessageNGTest() {

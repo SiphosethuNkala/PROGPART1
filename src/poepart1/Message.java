@@ -3,17 +3,19 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package poepart1;
+
 import java.util.Random;
 import javax.swing.JOptionPane;
-
-
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author RC_Student_Lab
  */
 public class Message {
- private String messageID;
+    private String messageID;
     private int messageNumber;
     private String recipient;
     private String messageText;
@@ -27,6 +29,9 @@ public class Message {
     
     // Flag to indicate if we're in test mode (no dialogs)
     private static boolean testMode = false;
+    
+    // JSON file for storing messages
+    private static final String STORAGE_FILE = "stored_messages.json";
     
     public Message(String recipient, String messageText) {
         this.messageNumber = ++messageCounter;
@@ -167,9 +172,7 @@ public class Message {
                 
             case 2: // Store
                 isStored = true;
-                if (!testMode) {
-                    storeMessage();
-                }
+                storeMessageToJSON();
                 return "Message successfully stored.";
                 
             default:
@@ -177,20 +180,110 @@ public class Message {
         }
     }
     
-    private void storeMessage() {
-        String jsonStructure = "{\n" +
-            "  \"messageID\": \"" + messageID + "\",\n" +
-            "  \"messageNumber\": " + messageNumber + ",\n" +
-            "  \"recipient\": \"" + recipient + "\",\n" +
-            "  \"messageText\": \"" + messageText.replace("\"", "\\\"") + "\",\n" +
-            "  \"messageHash\": \"" + messageHash + "\",\n" +
-            "  \"status\": \"STORED\"\n" +
-            "}";
+    private void storeMessageToJSON() {
+        try {
+            // Create JSON structure
+            String jsonStructure = "{\n" +
+                "  \"messageID\": \"" + messageID + "\",\n" +
+                "  \"messageNumber\": " + messageNumber + ",\n" +
+                "  \"recipient\": \"" + recipient + "\",\n" +
+                "  \"messageText\": \"" + escapeJSON(messageText) + "\",\n" +
+                "  \"messageHash\": \"" + messageHash + "\",\n" +
+                "  \"status\": \"STORED\"\n" +
+                "}";
+            
+            // Append to file or create new file
+            FileWriter writer = new FileWriter(STORAGE_FILE, true);
+            writer.write(jsonStructure + ",\n");
+            writer.close();
+            
+            System.out.println("Message stored in JSON: " + jsonStructure);
+            
+            if (!testMode) {
+                JOptionPane.showMessageDialog(null, 
+                    "💾 MESSAGE STORED SUCCESSFULLY\n\n" +
+                    "Message has been saved to JSON file for later sending.\n" +
+                    "File: " + STORAGE_FILE);
+            }
+            
+        } catch (IOException e) {
+            System.err.println("Error storing message to JSON: " + e.getMessage());
+            if (!testMode) {
+                JOptionPane.showMessageDialog(null, 
+                    "❌ ERROR STORING MESSAGE\n\n" +
+                    "Could not save message to file: " + e.getMessage());
+            }
+        }
+    }
+    
+    // Helper method to escape JSON special characters
+    private String escapeJSON(String text) {
+        return text.replace("\\", "\\\\")
+                  .replace("\"", "\\\"")
+                  .replace("\n", "\\n")
+                  .replace("\r", "\\r")
+                  .replace("\t", "\\t");
+    }
+    
+    // Static method to load stored messages from JSON file
+    public static List<Message> loadStoredMessagesFromJSON() {
+        List<Message> storedMessages = new ArrayList<>();
         
-        System.out.println("JSON stored: " + jsonStructure);
+        try {
+            File file = new File(STORAGE_FILE);
+            if (!file.exists()) {
+                return storedMessages; // Return empty list if file doesn't exist
+            }
+            
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            StringBuilder jsonContent = new StringBuilder();
+            String line;
+            
+            while ((line = reader.readLine()) != null) {
+                jsonContent.append(line.trim());
+            }
+            reader.close();
+            
+            // Simple JSON parsing (for demonstration)
+            // In a real application, you might want to use a JSON library like Gson
+            String content = jsonContent.toString();
+            String[] messages = content.split("\\},\\s*\\{");
+            
+            for (String messageStr : messages) {
+                // Clean up the JSON structure
+                messageStr = messageStr.replace("[", "").replace("]", "").replace("{", "").replace("}", "").trim();
+                
+                if (messageStr.isEmpty()) continue;
+                
+                // Parse individual fields
+                String recipient = extractField(messageStr, "recipient");
+                String messageText = extractField(messageStr, "messageText");
+                String status = extractField(messageStr, "status");
+                
+                if ("STORED".equals(status) && recipient != null && messageText != null) {
+                    Message message = new Message(recipient, messageText);
+                    message.setStored(true);
+                    storedMessages.add(message);
+                }
+            }
+            
+        } catch (IOException e) {
+            System.err.println("Error loading stored messages: " + e.getMessage());
+        }
         
-        JOptionPane.showMessageDialog(null, 
-            "Message stored as JSON:\n" + jsonStructure);
+        return storedMessages;
+    }
+    
+    // Helper method to extract field from JSON string
+    private static String extractField(String json, String fieldName) {
+        String pattern = "\"" + fieldName + "\"\\s*:\\s*\"([^\"]+)\"";
+        java.util.regex.Pattern p = java.util.regex.Pattern.compile(pattern);
+        java.util.regex.Matcher m = p.matcher(json);
+        
+        if (m.find()) {
+            return m.group(1).replace("\\\"", "\"").replace("\\\\", "\\");
+        }
+        return null;
     }
     
     public String printMessage() {
@@ -249,4 +342,9 @@ public class Message {
     public void setDisregarded(boolean disregarded) { this.isDisregarded = disregarded; }
     public void setMessageHash(String hash) { this.messageHash = hash; }
     public static void setTotalMessagesSent(int total) { totalMessagesSent = total; }
+    
+    // Get storage file path
+    public static String getStorageFilePath() {
+        return STORAGE_FILE;
+    }
 }

@@ -1,0 +1,96 @@
+{
+  "messageID": "8025450280",
+  "messageNumber": 3,
+  "recipient": "+27831234567",
+  "messageText": "Test message",
+  "messageHash": "80:3:TESTMESSAGE",
+  "status": "STORED"
+},
+{
+  "messageID": "8107893473",
+  "messageNumber": 1,
+  "recipient": "+27663991051",
+  "messageText": "hi",
+  "messageHash": "81:1:HIHI",
+  "status": "STORED"
+},
+{
+  "messageID": "5388330435",
+  "messageNumber": 3,
+  "recipient": "+27663991051",
+  "messageText": "hi",
+  "messageHash": "53:3:HIHI",
+  "status": "STORED"
+},
+{
+  "messageID": "7551280969",
+  "messageNumber": 3,
+  "recipient": "+27831234567",
+  "messageText": "Test message",
+  "messageHash": "75:3:TESTMESSAGE",
+  "status": "STORED"
+},
+{
+  "messageID": "3953108036",
+  "messageNumber": 2,
+  "recipient": "+27663991051",
+  "messageText": "hi",
+  "messageHash": "39:2:HIHI",
+  "status": "STORED"
+},
+{
+  "messageID": "9612921738",
+  "messageNumber": 3,
+  "recipient": "+27831234567",
+  "messageText": "Test message",
+  "messageHash": "96:3:TESTMESSAGE",
+  "status": "STORED"
+},
+{
+  "messageID": "1212558077",
+  "messageNumber": 3,
+  "recipient": "+27831234567",
+  "messageText": "Test message",
+  "messageHash": "12:3:TESTMESSAGE",
+  "status": "STORED"
+},
+{
+  "messageID": "9437687103",
+  "messageNumber": 3,
+  "recipient": "+27831234567",
+  "messageText": "Test message",
+  "messageHash": "94:3:TESTMESSAGE",
+  "status": "STORED"
+},
+{
+  "messageID": "1497957409",
+  "messageNumber": 9,
+  "recipient": "+27663991051",
+  "messageText": "hi",
+  "messageHash": "14:9:HIHI",
+  "status": "STORED"
+},
+{
+  "messageID": "1023685886",
+  "messageNumber": 3,
+  "recipient": "+27831234567",
+  "messageText": "Test message",
+  "messageHash": "10:3:TESTMESSAGE",
+  "status": "STORED"
+},
+{
+  "messageID": "6612027247",
+  "messageNumber": 3,
+  "recipient": "+27831234567",
+  "messageText": "Test message",
+  "messageHash": "66:3:TESTMESSAGE",
+  "status": "STORED"
+},
+{
+  "messageID": "5656777910",
+  "messageNumber": 3,
+  "recipient": "+27831234567",
+  "messageText": "Test message",
+  "messageHash": "56:3:TESTMESSAGE",
+  "status": "STORED"
+},
